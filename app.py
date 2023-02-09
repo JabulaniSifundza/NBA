@@ -76,7 +76,7 @@ fullname = st.text_input("Enter NBA Player's Fullname 👇🏾", placeholder="Pl
 
 def getplayerdata(fullname):
     if len(fullname) < 1:
-        st.write("Please enter a Player's fullname to start")
+        print("Please enter a Player's fullname to start")
     else:
         firstchar = fullname.split()
     firstname, lastname = firstchar
@@ -104,7 +104,7 @@ def getplayerdata(fullname):
 try:
     individual_stats = getplayerdata(fullname)
 except UnboundLocalError:
-    st.write("Please enter a Player's fullname to start")
+    print("Please enter a Player's fullname to start")
 
 if len(fullname) < 1:
     st.write("Please enter a Player's fullname to start")
