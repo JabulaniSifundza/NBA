@@ -103,85 +103,86 @@ def getplayerdata(fullname):
     return cleanup
 try:
     individual_stats = getplayerdata(fullname)
-    st.dataframe(individual_stats)
 except UnboundLocalError:
     st.write("Please enter a Player's fullname to start")
-    
+
+if len(fullname) < 1:
+    st.write("Please enter a Player's fullname to start")
+else:
+    st.dataframe(individual_stats)
+    seasons = individual_stats['Season']
+    # Assists, Points and Offensive Rebounds
+    labels = individual_stats['Season'].tolist()
+    # [_ for _ in individual_stats['Season']]
+    df_assists = individual_stats['AST'].tolist()
+    df_points = individual_stats['PTS'].tolist()
+    # df_offensive_stats = [df_assists, df_points, df_off_rebounds]
+    lab = np.arange(len(labels))
+    width = 0.4
+    fi, ax1 = plt.subplots(figsize=(22,10))
+    rects1 = ax1.bar(lab - width / 2, df_assists, width, label = 'Assists', align='center')
+    rects2 = ax1.bar(lab + width / 2, df_points, width, label = 'Points', align='center')
+
+    ax1.set_ylabel('Season Average')
+    ax1.set_title('Offensive Production')
+    ax1.set_xticks(lab, labels)
+    ax1.legend()
+    ax1.bar_label(rects1, padding=8)
+    ax1.bar_label(rects2, padding=8)
+    # fi.tight_layout()
+    st.subheader(f"{fullname} Offensive Statistics")
+    st.pyplot(fi)
+
+    # Defensive production
+    df_blocks = individual_stats['BLK'].tolist()
+    df_steals = individual_stats['STL'].tolist()
+    lab_size = np.arange(len(labels))
+    fig2, ax2 = plt.subplots(figsize=(22,10))
+    rects3 = ax2.bar(lab_size - width / 2, df_blocks, width, label = 'Blocks', align = 'center')
+    rects4 = ax2.bar(lab_size + width / 2, df_steals, width, label = 'Steals', align = 'center')
+    ax2.set_ylabel('Season Average')
+    ax2.set_title('Defensive Production')
+    ax2.set_xticks(lab_size, labels)
+    ax2.legend()
+    ax2.bar_label(rects3, padding=8)
+    ax2.bar_label(rects4, padding=8)
+    # fi.tight_layout()
+    st.subheader(f"{fullname} Defensive Statistics")
+    st.pyplot(fig2)
+
+    #Rebounding
+    df_ORB = individual_stats['ORB'].tolist()
+    df_DRB = individual_stats['DRB'].tolist()
+    lab2_size = np.arange(len(labels))
+    fig3, ax3 = plt.subplots(figsize=(22,10))
+    rects5 = ax3.bar(lab2_size - width / 2, df_ORB, width, label = 'Offensive Rebounding', align = 'center')
+    rects6 = ax3.bar(lab2_size + width / 2, df_DRB, width, label = 'Defensive Rebounding', align = 'center')
+    ax3.set_ylabel('Season Average')
+    ax3.set_title('Rebounding')
+    ax3.set_xticks(lab2_size, labels)
+    ax3.legend()
+    ax3.bar_label(rects5, padding=8)
+    ax3.bar_label(rects6, padding=8)
+    # fi.tight_layout()
+    st.subheader(f"{fullname} Rebounding")
+    st.pyplot(fig3)
 
 
-seasons = individual_stats['Season']
-# Assists, Points and Offensive Rebounds
-labels = individual_stats['Season'].tolist()
-# [_ for _ in individual_stats['Season']]
-df_assists = individual_stats['AST'].tolist()
-df_points = individual_stats['PTS'].tolist()
-# df_offensive_stats = [df_assists, df_points, df_off_rebounds]
-lab = np.arange(len(labels))
-width = 0.4
-fi, ax1 = plt.subplots(figsize=(22,10))
-rects1 = ax1.bar(lab - width / 2, df_assists, width, label = 'Assists', align='center')
-rects2 = ax1.bar(lab + width / 2, df_points, width, label = 'Points', align='center')
-
-ax1.set_ylabel('Season Average')
-ax1.set_title('Offensive Production')
-ax1.set_xticks(lab, labels)
-ax1.legend()
-ax1.bar_label(rects1, padding=8)
-ax1.bar_label(rects2, padding=8)
-# fi.tight_layout()
-st.subheader(f"{fullname} Offensive Statistics")
-st.pyplot(fi)
-
-# Defensive production
-df_blocks = individual_stats['BLK'].tolist()
-df_steals = individual_stats['STL'].tolist()
-lab_size = np.arange(len(labels))
-fig2, ax2 = plt.subplots(figsize=(22,10))
-rects3 = ax2.bar(lab_size - width / 2, df_blocks, width, label = 'Blocks', align = 'center')
-rects4 = ax2.bar(lab_size + width / 2, df_steals, width, label = 'Steals', align = 'center')
-ax2.set_ylabel('Season Average')
-ax2.set_title('Defensive Production')
-ax2.set_xticks(lab_size, labels)
-ax2.legend()
-ax2.bar_label(rects3, padding=8)
-ax2.bar_label(rects4, padding=8)
-# fi.tight_layout()
-st.subheader(f"{fullname} Defensive Statistics")
-st.pyplot(fig2)
-
-#Rebounding
-df_ORB = individual_stats['ORB'].tolist()
-df_DRB = individual_stats['DRB'].tolist()
-lab2_size = np.arange(len(labels))
-fig3, ax3 = plt.subplots(figsize=(22,10))
-rects5 = ax3.bar(lab2_size - width / 2, df_ORB, width, label = 'Offensive Rebounding', align = 'center')
-rects6 = ax3.bar(lab2_size + width / 2, df_DRB, width, label = 'Defensive Rebounding', align = 'center')
-ax3.set_ylabel('Season Average')
-ax3.set_title('Rebounding')
-ax3.set_xticks(lab2_size, labels)
-ax3.legend()
-ax3.bar_label(rects5, padding=8)
-ax3.bar_label(rects6, padding=8)
-# fi.tight_layout()
-st.subheader(f"{fullname} Rebounding")
-st.pyplot(fig3)
 
 
-
-
-selected_season = st.selectbox("Select Season", seasons)
-df_season_stats = individual_stats.loc[individual_stats['Season'] == selected_season]
-# Portion of 2 Pointers and 3 Pointers
-# Showing Season stats
-df_field_goals = df_season_stats.FG
-df_3Pointer = df_season_stats['3P'].values[0]
-df_2Pointer = df_season_stats['2P'].values[0]
-# df_Free_Throws = df_season_stats['FT'].values[0]
-df_shots = [df_2Pointer, df_3Pointer]
-# st.write(df_field_goals, df_2Pointer, df_3Pointer)
-explode = (0, 0.1)
-colors = ['#17408B', '#C9082A']
-fig, ax = plt.subplots()
-ax.set_title(f"Types of Shots Taken During {selected_season} Season")
-ax = plt.pie(df_shots, labels=["2 Pointers", "3 Pointers"], explode=explode, autopct='%1.1f%%', colors=colors)
-st.pyplot(fig)
+    selected_season = st.selectbox("Select Season", seasons)
+    df_season_stats = individual_stats.loc[individual_stats['Season'] == selected_season]
+    # Portion of 2 Pointers and 3 Pointers
+    # Showing Season stats
+    df_field_goals = df_season_stats.FG
+    df_3Pointer = df_season_stats['3P'].values[0]
+    df_2Pointer = df_season_stats['2P'].values[0]
+    # df_Free_Throws = df_season_stats['FT'].values[0]
+    df_shots = [df_2Pointer, df_3Pointer]
+    # st.write(df_field_goals, df_2Pointer, df_3Pointer)
+    explode = (0, 0.1)
+    colors = ['#17408B', '#C9082A']
+    fig, ax = plt.subplots()
+    ax.set_title(f"Types of Shots Taken During {selected_season} Season")
+    ax = plt.pie(df_shots, labels=["2 Pointers", "3 Pointers"], explode=explode, autopct='%1.1f%%', colors=colors)
+    st.pyplot(fig)
