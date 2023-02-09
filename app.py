@@ -101,8 +101,12 @@ def getplayerdata(fullname):
     # cleanup['MP'] = cleanup['MP'].apply(lambda x: round(float(x)))
     # cleanup['FG'] = cleanup['FG'].apply(lambda x: round(float(x), 1))
     return cleanup
+try:
+    individual_stats = getplayerdata(fullname)
+except UnboundLocalError:
+    st.write("Please enter a Player's fullname to start")
+    
 
-individual_stats = getplayerdata(fullname)
 st.dataframe(individual_stats)
 seasons = individual_stats['Season']
 # Assists, Points and Offensive Rebounds
