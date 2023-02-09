@@ -75,7 +75,10 @@ st.header('Visualize Individual Player Statistics')
 fullname = st.text_input("Enter NBA Player's Fullname 👇🏾", placeholder="Player Fullname")
 
 def getplayerdata(fullname):
-    firstchar = fullname.split()
+    if len(fullname) < 1:
+        st.write("Please enter a Player's fullname to start")
+    else:
+        firstchar = fullname.split()
     firstname, lastname = firstchar
 
     lastname_initial = lastname[0].lower()
@@ -98,6 +101,7 @@ def getplayerdata(fullname):
     # cleanup['MP'] = cleanup['MP'].apply(lambda x: round(float(x)))
     # cleanup['FG'] = cleanup['FG'].apply(lambda x: round(float(x), 1))
     return cleanup
+
 individual_stats = getplayerdata(fullname)
 st.dataframe(individual_stats)
 seasons = individual_stats['Season']
