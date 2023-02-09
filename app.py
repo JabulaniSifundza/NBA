@@ -103,11 +103,12 @@ def getplayerdata(fullname):
     return cleanup
 try:
     individual_stats = getplayerdata(fullname)
+    st.dataframe(individual_stats)
 except UnboundLocalError:
     st.write("Please enter a Player's fullname to start")
     
 
-st.dataframe(individual_stats)
+
 seasons = individual_stats['Season']
 # Assists, Points and Offensive Rebounds
 labels = individual_stats['Season'].tolist()
